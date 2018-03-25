@@ -30,6 +30,10 @@ A simple Deep CNN architecture with 3 blocks of `Conv2D => Conv2D => MaxPooling2
 #### Loss: Categorical CrossEntropy 
 #### Epochs: 10
 #### Time/Epoch: 20-24s
+#### Plots
+Loss Plot                  |  Accuracy Plot
+:-------------------------:|:-------------------------:
+![loss_plot](extras/loss_1.png)   |  ![accuracy_plot](extras/accuracy_1.png)
 
 ## Second Attempt
 
@@ -63,6 +67,11 @@ Deep CNN architecture with 3 blocks of `Conv2D => BatchNorm => Conv2D => MaxPool
 #### Callbacks
 * CSVLogger
 * ModelCheckPoint
+#### Plots
+Loss Plot                  |  Accuracy Plot
+:-------------------------:|:-------------------------:
+![loss_plot](extras/loss_2.png)   |  ![accuracy_plot](extras/accuracy_2.png)
+
 
 ## Third Attempt
 Images are sharpened and background noise is removed.
@@ -135,6 +144,11 @@ Deep CNN architecture with 3 blocks of `Conv2D => BatchNorm => Conv2D => MaxPool
 #### Callbacks
 * CSVLogger
 * ModelCheckPoint
+#### Plots
+Loss Plot                  |  Accuracy Plot
+:-------------------------:|:-------------------------:
+![loss_plot](extras/loss_3.png)   |  ![accuracy_plot](extras/accuracy_3.png)
+
 
 ## Fourth Attempt
 Deep CNN architecture with 3 blocks of `Conv2D => BatchNorm => Conv2D => MaxPooling => BatchNorm => Dropout` 
@@ -169,6 +183,11 @@ Deep CNN architecture with 3 blocks of `Conv2D => BatchNorm => Conv2D => MaxPool
 #### Callbacks
 * CSVLogger
 * ModelCheckPoint
+
+Loss Plot                        |  Accuracy Plot
+:------------------------------: |:-------------------------:
+![loss_plot](extras/loss_4.png)  |  ![accuracy_plot](extras/accuracy_4.png)
+
 
 ## Fifth Attempt
 
