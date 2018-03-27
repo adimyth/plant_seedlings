@@ -236,3 +236,7 @@ Deep CNN architecture with 3 blocks of `Conv2D => BatchNorm => Conv2D => MaxPool
 #### Callbacks
 * CSVLogger
 * ModelCheckPoint
+
+Loss Plot                        |  Accuracy Plot
+:------------------------------: |:-------------------------:
+![loss_plot](extras/loss_5.png)  |  ![accuracy_plot](extras/accuracy_5.png)
