@@ -12,6 +12,7 @@ from keras.utils import to_categorical, multi_gpu_model
 from keras.preprocessing.image import load_img, img_to_array, ImageDataGenerator
 from keras.models import Sequential
 from keras.optimizers import Adam
+from keras.models import Sequential, load_model
 from keras.layers import Dropout, Flatten, Dense, Conv2D, MaxPooling2D, BatchNormalization
 from keras.callbacks import ModelCheckpoint, CSVLogger, ReduceLROnPlateau
 import pickle
@@ -26,24 +27,27 @@ class DeepModel:
         self.add_callbacks()
         self.encoder = LabelEncoder()
 
-        self.trainX = self.process_image(self.TRAIN_DIR)
+        self.trainX = self.process_image(self.TRAIN_DIR, "train")
         self.trainY = self.process_labels(self.TRAIN_DIR)
 
         if self.validation:
-            self.validationX = self.process_image(self.VALIDATION_DIR)
+            self.validationX = self.process_image(self.VALIDATION_DIR, "validation")
             self.validationY = self.process_labels(self.VALIDATION_DIR)
     
-    def read_images(self, path):
+    def read_images(self, path, purpose):
         imgs = []
-        files = glob(os.path.join(path, "*/*"))
+        if purpose == "test":
+            files = glob(os.path.join(path, "*"))
+        else:
+            files = glob(os.path.join(path, "*/*"))
         for file in files:
             img = cv2.imread(file)
             img = cv2.resize(img, (self.IMG_WIDTH, self.IMG_HEIGHT))
             imgs.append(img)
         return imgs
 
-    def process_image(self, path):
-        imgs = self.read_images(path)
+    def process_image(self, path, purpose):
+        imgs = self.read_images(path, purpose)
         trainingImgs = []
         for img in imgs:
             blurImg = cv2.GaussianBlur(img, (5, 5), 0)   
@@ -163,7 +167,7 @@ class DeepModel:
                                 validation_data=(self.validationX, self.validationY),verbose=1, 
                                 steps_per_epoch=self.trainX.shape[0], 
                                 callbacks=self.callbacks_list)
-        self.model.save(self.OUTPUT_NAME_BASE + "_model.h5")
+        self.model.save(self.OUTPUT_BASE_NAME + "_model.h5")
         # self.model.fit_generator(
         #     self.trainGenerator,
         #     epochs=self.epochs,
@@ -173,7 +177,7 @@ class DeepModel:
 
 
     def add_callbacks(self):
-        filepath = os.path.join(self.MODEL_CHECKPOINT_PATH, self.OUTPUT_BASE_NAME)
+        filepath = os.path.join(self.MODEL_CHECKPOINT_PATH, self.OUTPUT_BASE_NAME+"_best.h5")
         modelcheckpoint = ModelCheckpoint(filepath)
 
         filename = os.path.join(self.LOG_PATH, self.NAME)
@@ -227,16 +231,19 @@ class DeepModel:
         # )
 
     def predict(self):
-        self.testX = self.process_image(self.TEST_DIR)
-        predictions = self.model.predict(testX)
+        model = load_model("checkpoints/best_model.h5")
+        self.testX = self.process_image(self.TEST_DIR, "test")
+        predictions = model.predict(self.testX)
         predictions = np.argmax(predictions, axis=1)
         self.predictions = self.encoder.classes_[predictions]
+        return self
 
     def save_as_csv(self):
-        files = glob(os.path.join(self.TEST_DIR, "*/*"))
+        files = glob(os.path.join(self.TEST_DIR, "*"))
         ids = []
         for file in files:
             ids.append(file.split('/')[-1])
         pred = {'file':ids, 'predictions':self.predictions}
         pred = pd.DataFrame(pred)
         pred.to_csv("predictions.csv", index=False)
+        return self

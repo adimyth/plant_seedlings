@@ -11,7 +11,7 @@ if __name__=="__main__":
         "TEST_DIR": GLOBAL_PATH+'data/test/',
         "MODEL_PATH": GLOBAL_PATH+'models/',
         "MODEL_CHECKPOINT_PATH": GLOBAL_PATH+'checkpoints/',
-        "OUTPUT_BASE_NAME": 'best_model.h5',
+        "OUTPUT_BASE_NAME": 'trained',
         "NAME": 'log.csv',
         "LOG_PATH": GLOBAL_PATH+"logs/",
         "IMG_HEIGHT": 80,
@@ -29,4 +29,5 @@ if __name__=="__main__":
     }
 
     new_model = DeepModel(arg_dict, params, validation=True)
-    new_model.build_nn().augment_data().train().predict().save_as_csv()
+    # new_model.build_nn().augment_data().train().predict().save_as_csv()
+    new_model.predict().save_as_csv()
