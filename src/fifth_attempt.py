@@ -122,4 +122,4 @@ checkpoint = ModelCheckpoint("plant_seedlings/models/best_model5.h5", save_best_
 
 model.fit_generator(datagen.flow(x_train, y_train, batch_size=75), 
                            epochs=35, validation_data=(x_validation, y_test),verbose=1, 
-                           steps_per_epoch=x_train.shape[0], callbacks=[csvlogger, checkpoint])
+                           steps_per_epoch=x_train.shape[0], callbacks=[csvlogger, learning_rate_reduction, checkpoint])

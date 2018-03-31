@@ -97,6 +97,7 @@ class DeepCNN:
         self.loss = 'categorical_crossentropy'
         self.epochs = epochs
         self.model.compile(optimizer=self.optimzer, loss=self.loss, metrics=['accuracy'])
+        self.model.summary()
 
     def train(self, batch_size=32):
         self.batch_size = batch_size
@@ -134,5 +135,7 @@ x_validation /= 255
 model = DeepCNN(x_train, y_train, x_validation, y_validation, input_shape, num_classes)
 model.define()
 model.compile()
+# model.summary()
+plot_model(model, to_file='model_1.png')
 # model.train()
 # mnist.predict("test.png")
